@@ -1,0 +1,45 @@
+name: Integration (Automatic)
+
+on:
+  push:
+    branches:
+      - main
+      - 'release/**'
+      - 'hotfix/**'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main, release/**]
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
+          pnpm config set store-dir ~/.pnpm
+      - name: Cache pnpm
+        uses: actions/cache@v2
+        env:
+          CACHE_NAME: cache-node-modules
+        with:
+          path: ~/.pnpm
+          key: ${{ runner.os }}-${{ env.CACHE_NAME }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.CACHE_NAME }}-
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile --prefer-offline
+      - name: Unit Tests
+        run: pnpm test:ci
+      - name: Linting
+        run: pnpm lint
+      - name: Build
+        run: pnpm build
+      - name: Publish
+        run: npm publish --access=Public
