@@ -50,7 +50,7 @@ jobs:
       - name: Get NPM Version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@latest
-      - uses: mukunku/tag-exists-action@latest
+      - uses: mukunku/tag-exists-action@v1.4.0
         id: check-tag
         with:
           tag: 'v${{ steps.package-version.outputs.current-version}}'
