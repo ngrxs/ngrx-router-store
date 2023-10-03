@@ -5,11 +5,23 @@
   "overrides": [
     {
       "filename": "{*.spec.ts,*.mocks.ts}",
-      "words": ["ngneat"]
+      "words": [
+        "ngneat"
+      ]
     },
     {
-      "filename": "angular.json",
-      "words": ["devkit"]
+      "filename": "{angular.json,ng-package.json}",
+      "words": [
+        "packagr",
+        "devkit"
+      ]
+    },
+    {
+      "filename": "jest.config.js",
+      "words": [
+        "lcov",
+        "cobertura"
+      ]
     }
   ],
   "ignorePaths": [
@@ -22,9 +34,6 @@
     "dist/"
   ],
   "words": [
-    "lcov",
-    "cobertura",
-    "compodoc",
     "ngrx"
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "name": "ngrx-router-store",
+  "name": "@ngrxs/router-store",
   "version": "1.0.0",
   "description": "An NGRX router store with actions and router selectors for easier development",
   "license": "MIT",
@@ -24,5 +24,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ngrxs/ngrx-router-store.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

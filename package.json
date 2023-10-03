@@ -1,5 +1,5 @@
 {
-  "name": "ngrxs/ngrx-router-store",
+  "name": "@ngrxs/router-store",
   "version": "0.0.1",
   "license": "MIT",
   "private": true,

@@ -10,7 +10,7 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "downlevelIteration": true,
-    "outDir": "./dist/ngrx-router-store",
+    "outDir": "./dist/router-store",
     "paths": {},
     "rootDir": ".",
     "sourceMap": true,

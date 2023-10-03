@@ -10,12 +10,15 @@ on:
     types: [opened, synchronize, reopened]
     branches: [main, release/**]
 
+env:
+  CAN_RELEASE: ${{ github.ref == 'refs/heads/main' }}
+
 jobs:
   build:
     name: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -35,16 +38,49 @@ jobs:
             ${{ runner.os }}-${{ env.CACHE_NAME }}-
       - name: Install dependencies
         run: pnpm i --frozen-lockfile --prefer-offline
+      - name: Spelling
+        run: npx -y cspell **/* --no-progress
       - name: Unit Tests
         run: pnpm test:ci
       - name: Linting
         run: pnpm lint
       - name: Build
         run: pnpm build
-      - name: npm login
-        run: |
-          npm config set //reg.example.com/:_authToken ${{ secrets.NPM_TOKEN }}
+      - uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist/
+      - name: Get NPM Version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@latest
+      - uses: mukunku/tag-exists-action@latest
+        id: check-tag
+        with:
+          tag: 'v${{ steps.package-version.outputs.current-version}}'
+    outputs:
+      TAG: 'v${{ steps.package-version.outputs.current-version}}'
+      RELEASE_TAG_FREE: ${{ steps.check-tag.outputs.exists == 'false' }}
+  publish:
+    name: publish
+    needs: build
+    runs-on: ubuntu-latest
+    if: env.CAN_RELEASE == 'true' && needs.build.outputs.RELEASE_TAG_FREE == 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v3
+        with:
+          name: dist
       - name: Publish
         run: |
-          cd dist
-          npm publish --access=Public
+          cd dist/router-store/
+          npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+          npm publish
+      - name: Create Release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ needs.build.outputs.TAG }}
+          release_name: ${{ needs.build.outputs.TAG }}
+          draft: false
+          prerelease: false
