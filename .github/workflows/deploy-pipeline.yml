@@ -51,7 +51,7 @@ jobs:
         id: package-version
         uses: martinbeentjes/npm-get-version-action@v1.3.1
         with:
-          path: dist/router-store/package.json
+          path: dist/router-store
       - uses: mukunku/tag-exists-action@v1.4.0
         id: check-tag
         with:
