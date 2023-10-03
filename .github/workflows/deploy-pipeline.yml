@@ -1,4 +1,4 @@
-name: Integration (Automatic)
+name: Integration
 
 on:
   push:
@@ -50,6 +50,8 @@ jobs:
       - name: Get NPM Version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@v1.3.1
+        with:
+          path: dist/router-store/package.json
       - uses: mukunku/tag-exists-action@v1.4.0
         id: check-tag
         with:
@@ -67,6 +69,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: dist
+          path: dist/
       - name: Publish
         run: |
           cd dist/router-store/
