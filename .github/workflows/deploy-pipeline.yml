@@ -10,12 +10,9 @@ on:
     types: [opened, synchronize, reopened]
     branches: [main, release/**]
 
-env:
-  CAN_RELEASE: ${{ github.ref == 'refs/heads/main' }}
-
 jobs:
   build:
-    name: build
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -61,10 +58,10 @@ jobs:
       TAG: 'v${{ steps.package-version.outputs.current-version}}'
       RELEASE_TAG_FREE: ${{ steps.check-tag.outputs.exists == 'false' }}
   publish:
-    name: publish
+    name: Publish
     needs: build
     runs-on: ubuntu-latest
-    if: env.CAN_RELEASE == 'true' && needs.build.outputs.RELEASE_TAG_FREE == 'true'
+    if: github.ref == 'refs/heads/main' && needs.build.outputs.RELEASE_TAG_FREE == 'true'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v3
