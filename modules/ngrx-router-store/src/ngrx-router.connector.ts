@@ -5,15 +5,16 @@ import {
   Event,
   GuardsCheckEnd,
   GuardsCheckStart,
-  Params,
   Router
 } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { Subscription } from 'rxjs';
 
-import { getRouteParams, getRoutePath, getRoutePathFromRoot } from './state/ngrx-router.functions';
+import { getRoutePath, getRoutePathFromRoot } from './serializers/ngrx-router.functions';
 import * as actions from './state/ngrx-router.actions';
+import { NgrxRouterSnapshotState } from './state/ngrx-router.reducer';
+import { NgrxRouterStateOptions, ROUTER_STATE_OPTIONS } from './ngrx-router.configs';
 
 @Injectable()
 export class NgrxRouterConnector implements OnDestroy {
@@ -21,9 +22,10 @@ export class NgrxRouterConnector implements OnDestroy {
 
   readonly #router = inject(Router);
   readonly #store = inject(Store);
+  readonly #options = inject<NgrxRouterStateOptions>(ROUTER_STATE_OPTIONS);
 
   #routes: string[] = [];
-  #params: Params = {};
+  #snapshotState: NgrxRouterSnapshotState = { params: {}, queryParams: {} };
   #subscription?: Subscription;
 
   constructor() {
@@ -38,7 +40,7 @@ export class NgrxRouterConnector implements OnDestroy {
     this.#subscription = this.#router.events.subscribe((event: Event) => {
       if (event instanceof GuardsCheckStart) {
         this.#routes = [];
-        this.#params = getRouteParams(event.state.root, {});
+        this.#snapshotState = this.#options.serializerFunc(event.state.root);
       } else if (event instanceof ActivationStart) {
         const route = getRoutePath(event.snapshot);
         if (route !== '' && !this.#routes.includes(route)) {
@@ -54,7 +56,7 @@ export class NgrxRouterConnector implements OnDestroy {
         }
 
         this.#store.dispatch(
-          actions.routeChange({ url, routes: this.#routes, params: this.#params })
+          actions.routeChange({ url, routes: this.#routes, ...this.#snapshotState })
         );
       } else if (event instanceof ActivationEnd) {
         if (NgrxRouterConnector.firstActivationInProgress) {

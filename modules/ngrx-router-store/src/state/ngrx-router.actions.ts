@@ -12,7 +12,7 @@ export const goToUrl = createAction(
 
 export const routeChange = createAction(
   '[Router] Route Change',
-  props<{ url: string; routes: string[]; params: Params }>()
+  props<{ url: string; routes: string[]; params: Params; queryParams: Params }>()
 );
 
 export const routeLeave = createAction(
@@ -22,6 +22,7 @@ export const routeLeave = createAction(
 
 export const firstRouteCompleted = createAction('[Router] First Route Completed');
 
-export type RouteChangeProps = ReturnType<typeof routeChange>;
-export type RouteLeaveProps = ReturnType<typeof routeLeave>;
-export type FirstRouteCompletedProps = ReturnType<typeof firstRouteCompleted>;
+export type GoToUrlAction = ReturnType<typeof goToUrl>;
+export type RouteChangeAction = ReturnType<typeof routeChange>;
+export type RouteLeaveAction = ReturnType<typeof routeLeave>;
+export type FirstRouteCompletedAction = ReturnType<typeof firstRouteCompleted>;

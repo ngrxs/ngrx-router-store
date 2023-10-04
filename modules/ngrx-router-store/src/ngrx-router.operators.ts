@@ -3,16 +3,20 @@ import { Action } from '@ngrx/store';
 import { OperatorFunction } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import * as actions from './state/ngrx-router.actions';
+import {
+  routeChange,
+  RouteChangeAction,
+  routeLeave,
+  RouteLeaveAction
+} from './state/ngrx-router.actions';
 
-type RouteChange = ReturnType<typeof actions.routeChange>;
 export function ofRoute(
   route: string | string[],
   except?: string | string[]
-): OperatorFunction<Action, RouteChange> {
-  return filter<Action, RouteChange>((action: Action): action is RouteChange => {
-    if (action.type === actions.routeChange.type) {
-      const routeAction = action as RouteChange;
+): OperatorFunction<Action, RouteChangeAction> {
+  return filter<Action, RouteChangeAction>((action: Action): action is RouteChangeAction => {
+    if (action.type === routeChange.type) {
+      const routeAction = action as RouteChangeAction;
       if (
         typeof except !== 'undefined' &&
         except !== null &&
@@ -29,11 +33,10 @@ export function ofRoute(
   });
 }
 
-type RouteLeave = ReturnType<typeof actions.routeLeave>;
-export function onLeaveRoute(routes: string[]): OperatorFunction<Action, RouteLeave> {
-  return filter<Action, RouteLeave>((action: Action): action is RouteLeave => {
-    if (action.type === actions.routeLeave.type) {
-      const routeAction = action as RouteLeave;
+export function onLeaveRoute(routes: string[]): OperatorFunction<Action, RouteLeaveAction> {
+  return filter<Action, RouteLeaveAction>((action: Action): action is RouteLeaveAction => {
+    if (action.type === routeLeave.type) {
+      const routeAction = action as RouteLeaveAction;
       return routes.includes(routeAction.route);
     }
 

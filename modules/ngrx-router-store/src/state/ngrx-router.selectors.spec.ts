@@ -9,7 +9,8 @@ const createMockState = (): NgrxRouterPartialState => ({
   [NGRX_ROUTER_FEATURE_KEY]: {
     url: '/test/url/path',
     routes: ['/test/route', '/a/b/c/d/e'],
-    params: { id: '5', age: 20 }
+    params: { id: '5', age: 20 },
+    queryParams: {}
   }
 });
 

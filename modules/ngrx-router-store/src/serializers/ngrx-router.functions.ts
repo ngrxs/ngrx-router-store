@@ -1,5 +1,7 @@
 import { ActivatedRoute, ActivatedRouteSnapshot, Params } from '@angular/router';
 
+import { NgrxRouterSnapshotState } from '../state/ngrx-router.reducer';
+
 export function getRoutePath(route: ActivatedRouteSnapshot): string {
   const path =
     !route.routeConfig || !route.routeConfig.path || route.routeConfig.path.length === 0
@@ -22,3 +24,14 @@ export function getRoutePathFromRoot(route: ActivatedRoute): string {
       : '/' + route.routeConfig.path;
   return noChildren ? path : path + getRoutePathFromRoot(route.children[0]);
 }
+
+export type NgrxRouteSnapshotSerializeFunc = (
+  snapshot: ActivatedRouteSnapshot
+) => NgrxRouterSnapshotState;
+
+export const defaultRouteSnapshotSerializeFunc: NgrxRouteSnapshotSerializeFunc = (
+  snapshot: ActivatedRouteSnapshot
+) => ({
+  queryParams: snapshot.queryParams,
+  params: getRouteParams(snapshot, {})
+});

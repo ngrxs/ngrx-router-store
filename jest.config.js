@@ -52,7 +52,6 @@ const config = {
 
   collectCoverageFrom: [
     'modules/**/*.{ts,tsx}',
-    '!modules/ngrx-router-store/src/ngrx-router.providers.ts',
     '!**/jest.setup.ts',
     '!**/*.stories.ts',
     '!**/*.d.ts',
@@ -60,10 +59,10 @@ const config = {
   // The threshold is set per `ESP007.2`.
   coverageThreshold: {
     global: {
-      branches: 65,
-      functions: 65,
-      lines: 80,
-      statements: 80,
+      branches: 75,
+      functions: 75,
+      lines: 85,
+      statements: 85,
     },
   },
   reporters: reporters,

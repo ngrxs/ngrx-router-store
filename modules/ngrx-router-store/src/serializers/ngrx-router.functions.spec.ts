@@ -1,6 +1,7 @@
 import { ActivatedRoute, ActivatedRouteSnapshot, Route } from '@angular/router';
 
-import { getRoutePathFromRoot, getRoutePath } from './ngrx-router.functions';
+import { getRoutePathFromRoot, getRoutePath, getRouteParams } from './ngrx-router.functions';
+import { Params } from '@angular/router';
 
 const createActivatedRoute = (route: Route, children: null | ActivatedRoute[]): ActivatedRoute => {
   const root = new ActivatedRoute();
@@ -11,11 +12,15 @@ const createActivatedRoute = (route: Route, children: null | ActivatedRoute[]): 
 
 const createActivatedRouteSnapshot = (
   route: Route,
-  parent: null | ActivatedRouteSnapshot
+  parent: null | ActivatedRouteSnapshot,
+  children: ActivatedRouteSnapshot[] = [],
+  params: Params = {}
 ): ActivatedRouteSnapshot => {
   const snapshot = new ActivatedRouteSnapshot();
   Object.defineProperty(snapshot, 'routeConfig', { get: () => route });
   Object.defineProperty(snapshot, 'parent', { value: parent });
+  Object.defineProperty(snapshot, 'children', { value: children });
+  Object.defineProperty(snapshot, 'params', { get: () => params });
   return snapshot;
 };
 
@@ -54,5 +59,15 @@ describe('functions', () => {
     const path = getRoutePath(p2);
 
     expect(path).toBe('/topics/:id/edit');
+  });
+
+  it('getRouteParams gets the current snapshot params', () => {
+    const c1 = createActivatedRouteSnapshot({ path: 'topics' }, null, [], { id: 1 });
+    const root = createActivatedRouteSnapshot({ path: 'posts' }, null, [c1], { age: 20 });
+
+    const params = getRouteParams(root, {});
+
+    expect(params.id).toBe(1);
+    expect(params.age).toBe(20);
   });
 });

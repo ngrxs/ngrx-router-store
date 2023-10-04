@@ -1,14 +1,18 @@
+import { Params } from '@angular/router';
 import { createReducer, on } from '@ngrx/store';
 
 import * as actions from './ngrx-router.actions';
-import { Params } from '@angular/router';
 
 export const NGRX_ROUTER_FEATURE_KEY = 'ngrx-router';
 
-export interface NgrxRouterState {
+export interface NgrxRouterSnapshotState {
+  params: Params;
+  queryParams: Params;
+}
+
+export interface NgrxRouterState extends NgrxRouterSnapshotState {
   url: string;
   routes: string[];
-  params: Params;
 }
 
 export interface NgrxRouterPartialState {
@@ -18,13 +22,28 @@ export interface NgrxRouterPartialState {
 export const initialState: NgrxRouterState = {
   url: '',
   routes: [],
-  params: {}
+  params: {},
+  queryParams: {}
 };
 
 export const ngrxRouterReducer = createReducer(
   initialState,
   on(
     actions.routeChange,
-    (_, { url, routes, params }): NgrxRouterState => ({ url, routes, params })
+    (_, { url, routes, params, queryParams }): NgrxRouterState => ({
+      url,
+      routes,
+      params,
+      queryParams
+    })
   )
 );
+
+export const createNgrxRouterPartialState = (
+  state: Partial<NgrxRouterState>
+): NgrxRouterPartialState => ({
+  [NGRX_ROUTER_FEATURE_KEY]: {
+    ...initialState,
+    ...state
+  }
+});
