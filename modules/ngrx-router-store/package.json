@@ -1,6 +1,6 @@
 {
   "name": "@ngrxs/router-store",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An NGRX router store with actions and router selectors for easier development",
   "license": "MIT",
   "main": "index.js",
