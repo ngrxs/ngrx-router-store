@@ -4,7 +4,6 @@
   "description": "An NGRX router store with actions and router selectors for easier development",
   "license": "MIT",
   "main": "index.js",
-  "files": ["testing/index.js"],
   "peerDependencies": {
     "@angular/common": "^16.0.0",
     "@angular/core": "^16.0.0",
