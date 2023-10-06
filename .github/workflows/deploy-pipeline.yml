@@ -82,6 +82,11 @@ jobs:
         with:
           name: dist
           path: dist/
+      - name: Publish
+        run: |
+          cd dist/router-store/
+          npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+          npm publish
       - name: Create Release
         uses: actions/create-release@latest
         env:
@@ -91,8 +96,3 @@ jobs:
           release_name: ${{ needs.build.outputs.TAG }}
           draft: false
           prerelease: false
-      - name: Publish
-        run: |
-          cd dist/router-store/
-          npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
-          npm publish
