@@ -5,15 +5,15 @@
   "license": "MIT",
   "main": "index.js",
   "peerDependencies": {
-    "@angular/common": "^16.0.0",
-    "@angular/core": "^16.0.0",
-    "@angular/router": "^16.0.0",
-    "@ngrx/store": "16.2.0",
-    "@ngrx/effects": "16.2.0",
-    "rxjs": "^6.5.3 || ^7.5.0"
+    "@angular/common": "^17.1.2",
+    "@angular/core": "^17.1.2",
+    "@angular/router": "^17.1.2",
+    "@ngrx/store": "~17.1.0",
+    "@ngrx/effects": "~17.1.0",
+    "rxjs": "^6.5.3 || ^7.8.0"
   },
   "dependencies": {
-    "tslib": "^2.0.0"
+    "tslib": "^2.3.0"
   },
   "author": "Rosen Kolev",
   "keywords": [
