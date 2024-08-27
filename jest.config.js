@@ -52,6 +52,7 @@ const config = {
 
   collectCoverageFrom: [
     'modules/**/*.{ts,tsx}',
+    '!**/ngrx-router.module.ts',
     '!**/jest.setup.ts',
     '!**/*.stories.ts',
     '!**/*.d.ts',
