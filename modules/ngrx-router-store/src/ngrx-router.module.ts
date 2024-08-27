@@ -18,7 +18,7 @@ import {
   ]
 })
 export class NgrxRouterStateModule {
-  forRoot(options: NgrxRouterStateOptions = {}): ModuleWithProviders<NgrxRouterStateModule> {
+  static forRoot(options: NgrxRouterStateOptions = {}): ModuleWithProviders<NgrxRouterStateModule> {
     const _options = { ...defaultNgrxRouterStateOptions, ...options };
     return {
       ngModule: NgrxRouterStateModule,
