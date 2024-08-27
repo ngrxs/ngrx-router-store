@@ -28,6 +28,21 @@
 
     ```
 
+3.1.  Use `NgrxRouterStateModule`:
+
+    ```typescript
+
+    import { ApplicationConfig } from '@angular/core';
+    import { NgrxRouterStateModule } from '@ngrxs/router-store';
+
+    @NgModule({
+      imports: [NgrxRouterStateModule.forRoot()]
+    })
+    export class MyModule {
+    }
+
+    ```
+
 4.  Done! You can see `ngrx-router` state in `Redux DevTools`.
 
 ### Advanced Use
